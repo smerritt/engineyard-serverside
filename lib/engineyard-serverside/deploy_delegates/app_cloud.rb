@@ -10,8 +10,8 @@ module EY::DeployDelegate
       [:app_master, :app, :solo]
     end
 
-    def restart
-      deploy.run("/engineyard/bin/app_#{deploy.config.app} deploy")
+    def restart_command
+      "/engineyard/bin/app_#{deploy.config.app} deploy"
     end
 
   end

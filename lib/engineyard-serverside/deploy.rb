@@ -117,7 +117,7 @@ module EY
       @restart_failed = true
       info "~> Restarting app servers"
       roles(app_server_roles) do
-        delegate.restart
+        run(restart_command)
       end
       @restart_failed = false
     end
@@ -325,6 +325,7 @@ module EY
     # Delegators
     def app_server_roles()        delegate.app_server_roles        end
     def migration_running_roles() delegate.migration_running_roles end
+    def restart_command()         delegate.restart_command         end
 
   end   # DeployBase
 
