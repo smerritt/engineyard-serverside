@@ -73,7 +73,7 @@ module EY
       end
 
       @maintenance_up = true
-      roles(*delegate.maintenance_page_roles) do
+      roles(app_server_roles) do
         maint_page_dir = File.join(c.shared_path, "system")
         visible_maint_page = File.join(maint_page_dir, "maintenance.html")
         run Escape.shell_command(['mkdir', '-p', maint_page_dir])
@@ -93,7 +93,7 @@ module EY
 
     def disable_maintenance_page
       @maintenance_up = false
-      roles(*delegate.maintenance_page_roles) do
+      roles(app_server_roles) do
         run "rm -f #{File.join(c.shared_path, "system", "maintenance.html")}"
       end
     end
@@ -116,7 +116,7 @@ module EY
     def restart
       @restart_failed = true
       info "~> Restarting app servers"
-      roles(*delegate.restart_roles) do
+      roles(app_server_roles) do
         delegate.restart
       end
       @restart_failed = false
@@ -173,7 +173,7 @@ module EY
     def migrate
       return unless c.migrate?
       @migrations_reached = true
-      roles(*delegate.migrate_roles) do
+      roles(migration_running_roles) do
         cmd = "cd #{c.release_path} && PATH=#{c.binstubs_path}:$PATH #{c.framework_envs} #{c.migration_command}"
         info "~> Migrating: #{cmd}"
         run(cmd)
@@ -321,6 +321,10 @@ module EY
 
     def default_09_bundler() "0.9.26" end
     def default_10_bundler() "1.0.0"  end
+
+    # Delegators
+    def app_server_roles()        delegate.app_server_roles        end
+    def migration_running_roles() delegate.migration_running_roles end
 
   end   # DeployBase
 

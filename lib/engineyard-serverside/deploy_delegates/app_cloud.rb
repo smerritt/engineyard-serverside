@@ -2,15 +2,11 @@ module EY::DeployDelegate
   class AppCloud < Base
     register 'appcloud'
 
-    def migrate_roles
+    def migration_running_roles
       [ :app_master, :solo ]
     end
 
-    def maintenance_page_roles
-      restart_roles
-    end
-
-    def restart_roles
+    def app_server_roles
       [:app_master, :app, :solo]
     end
 

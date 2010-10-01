@@ -30,7 +30,7 @@ module EY
       raise "Roles must be passed a block" unless block_given?
 
       begin
-        @roles = task_roles
+        @roles = task_roles.flatten
         yield
       ensure
         @roles = :all

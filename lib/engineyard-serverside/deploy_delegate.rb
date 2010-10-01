@@ -27,18 +27,14 @@ module EY
         @deploy = deploy
       end
 
-      def maintenance_page_roles() [] end
-      def migrate_roles() [] end
-
-      def restart_roles
-        # Implement in subclass, return roles of instances where restart should be run
-        raise "#{self.class} has not implemented #restart_roles"
+      def migration_running_roles
+        raise NotImplementedError
       end
 
-      def restart
-        # Implement in subclass, perform necessary actions to restart app instances
-        raise "#{self.class} has not implemented #restart"
+      def app_server_roles
+        raise NotImplementedError
       end
+
     end
   end
 end
