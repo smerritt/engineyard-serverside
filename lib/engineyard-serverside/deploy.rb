@@ -73,7 +73,7 @@ module EY
       end
 
       @maintenance_up = true
-      roles :app_master, :app, :solo do
+      roles(*delegate.maintenance_page_roles) do
         maint_page_dir = File.join(c.shared_path, "system")
         visible_maint_page = File.join(maint_page_dir, "maintenance.html")
         run Escape.shell_command(['mkdir', '-p', maint_page_dir])
@@ -93,7 +93,7 @@ module EY
 
     def disable_maintenance_page
       @maintenance_up = false
-      roles :app_master, :app, :solo do
+      roles(*delegate.maintenance_page_roles) do
         run "rm -f #{File.join(c.shared_path, "system", "maintenance.html")}"
       end
     end
@@ -116,14 +116,10 @@ module EY
     def restart
       @restart_failed = true
       info "~> Restarting app servers"
-      roles :app_master, :app, :solo do
-        run(restart_command)
+      roles(*delegate.restart_roles) do
+        delegate.restart
       end
       @restart_failed = false
-    end
-
-    def restart_command
-      "/engineyard/bin/app_#{c.app} deploy"
     end
 
     # task
@@ -177,7 +173,7 @@ module EY
     def migrate
       return unless c.migrate?
       @migrations_reached = true
-      roles :app_master, :solo do
+      roles(*delegate.migrate_roles) do
         cmd = "cd #{c.release_path} && PATH=#{c.binstubs_path}:$PATH #{c.framework_envs} #{c.migration_command}"
         info "~> Migrating: #{cmd}"
         run(cmd)
@@ -281,6 +277,11 @@ module EY
       sudo "rm -rf #{c.release_path}"
       raise
     end
+
+    def deploy_delegate
+      @deploy_delegate ||= DeployDelegate.for(self)
+    end
+    alias :delegate :deploy_delegate
 
     def warn_about_missing_lockfile
       info "!>"
