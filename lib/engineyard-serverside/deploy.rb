@@ -278,10 +278,9 @@ module EY
       raise
     end
 
-    def deploy_delegate
-      @deploy_delegate ||= DeployDelegate.for(self)
+    def platform
+      @platform ||= Platform.for(config.platform, config)
     end
-    alias :delegate :deploy_delegate
 
     def warn_about_missing_lockfile
       info "!>"
@@ -323,9 +322,9 @@ module EY
     def default_10_bundler() "1.0.0"  end
 
     # Delegators
-    def app_server_roles()        delegate.app_server_roles        end
-    def migration_running_roles() delegate.migration_running_roles end
-    def restart_command()         delegate.restart_command         end
+    def app_server_roles()        platform.app_server_roles        end
+    def migration_running_roles() platform.migration_running_roles end
+    def restart_command()         platform.restart_command         end
 
   end   # DeployBase
 

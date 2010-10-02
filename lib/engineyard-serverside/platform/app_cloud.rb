@@ -1,6 +1,6 @@
-module EY::DeployDelegate
+module EY::Platform
   class AppCloud < Base
-    register 'appcloud'
+    register_as 'appcloud'
 
     def migration_running_roles
       [ :app_master, :solo ]

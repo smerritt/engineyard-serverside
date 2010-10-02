@@ -6,7 +6,7 @@ module EY
     DEFAULT_CONFIG = Thor::CoreExt::HashWithIndifferentAccess.new({
       "branch"         => "master",
       "strategy"       => "Git",
-      "infrastructure" => "appcloud"
+      "platform"       => "appcloud"
     })
 
     attr_reader :configuration
@@ -50,7 +50,7 @@ module EY
     end
 
     def metadata
-      @metadata ||= EY::Metadata.for(configuration['infrastructure'])
+      @metadata ||= EY::Metadata.for(configuration.platform)
     end
 
     def node
