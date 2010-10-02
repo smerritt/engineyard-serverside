@@ -5,7 +5,7 @@ module FullDeployHelpers
     # set up EY::Server like we're on a solo
     EY::Server.reset
     EY::Server.add(:hostname => 'localhost', :roles => %w[solo])
-    
+
     $0 = File.expand_path(File.join(File.dirname(__FILE__), '..', '..', 'bin', 'engineyard-serverside'))
   end
 

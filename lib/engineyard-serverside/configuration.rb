@@ -4,9 +4,9 @@ require 'thor'
 module EY
   class Deploy::Configuration
     DEFAULT_CONFIG = Thor::CoreExt::HashWithIndifferentAccess.new({
-      "branch"         => "master",
-      "strategy"       => "Git",
-      "platform"       => "appcloud"
+      "branch"   => "master",
+      "strategy" => "Git",
+      "platform" => "appcloud"
     })
 
     attr_reader :configuration
