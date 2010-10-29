@@ -140,6 +140,7 @@ module EY
                             end
 
         sudo "#{$0} _#{VERSION}_ install_bundler #{bundler_installer.version}"
+        sudo "mkdir -p '#{bundled_gems_path}' && chown #{c.user} '#{bundled_gems_path}'"
 
         run "cd #{c.release_path} && bundle _#{bundler_installer.version}_ install #{bundler_installer.options}"
       end
@@ -320,13 +321,18 @@ module EY
       BundleInstaller.new(version, '--without=development --without=test')
     end
 
+    def bundled_gems_path
+      "/var/cache/apps/#{c.app}/bundled_gems"
+    end
+    public :bundled_gems_path  # for testability
+
     def bundler_10_installer(version)
       BundleInstaller.new(version,
-        "--deployment --path #{c.shared_path}/bundled_gems --binstubs #{c.binstubs_path} --without development test")
+        "--deployment --path #{bundled_gems_path} --binstubs #{c.binstubs_path} --without development test")
     end
 
     def default_09_bundler() "0.9.26" end
-    def default_10_bundler() "1.0.0"  end
+    def default_10_bundler() "1.0.3"  end
 
   end   # DeployBase
 

@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/spec_helper'
 describe "the bundler version retrieved from the lockfile" do
   def get_version(file)
     full_path = File.expand_path("../support/lockfiles/#{file}", __FILE__)
-    @config = EY::Deploy::Configuration.new('deploy_to' => 'dontcare')
+    @config = EY::Deploy::Configuration.new('deploy_to' => 'dontcare', 'app' => 'alsodontcare')
     EY::DeployBase.new(@config).get_bundler_installer(full_path).version
   end
 

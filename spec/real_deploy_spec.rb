@@ -105,6 +105,12 @@ describe "deploying an application" do
       nil
     end
 
+    def bundled_gems_path
+      # The default is in /var/cache, but since this test can't
+      # actually sudo, we can't install bundled gems there.
+      c.shared_path + '/bundled_gems'
+    end
+
     def restart
       FileUtils.touch("#{c.release_path}/restart")
     end
